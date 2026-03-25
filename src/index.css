@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+@theme {
+  --breakpoint-tab800: 800px;
+  --breakpoint-tab820: 820px;
+  --breakpoint-tab834: 834px;
+  /* Add lg breakpoint if it's missing or override to make 1024 the desktop cutoff */
+  --breakpoint-desktop: 1024px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@keyframes howitworksFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.howitworks-fade {
+  animation: howitworksFadeIn 320ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .howitworks-fade {
+    animation: none;
+  }
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes servicesCommunityPanorama {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  45% {
+    transform: translate3d(-35%, 0, 0);
+  }
+  55% {
+    transform: translate3d(-35%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.services-community-track {
+  animation: servicesCommunityPanorama 18s ease-in-out infinite;
+  will-change: transform;
+}
+
+.services-community-track--js {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .services-community-track {
+    animation: none;
+  }
+}
