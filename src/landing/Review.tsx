@@ -73,9 +73,9 @@ export function Review() {
     { loop: true, align: "start" },
     [
       Autoplay({
-        delay: 6500,
-        stopOnInteraction: true,
-        stopOnMouseEnter: true,
+        delay: 4000,
+        stopOnInteraction: false,
+        stopOnMouseEnter: false,
       }),
     ],
   );
@@ -94,11 +94,31 @@ export function Review() {
     emblaApi.on("reInit", onSelect);
   }, [emblaApi, onSelect]);
 
-  const goPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
-  const goNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+  const resetAutoplay = useCallback(() => {
+    const autoplay = emblaApi?.plugins()?.autoplay;
+    if (!autoplay) return;
+    autoplay.reset();
+  }, [emblaApi]);
+
+  const goPrev = useCallback(() => {
+    if (!emblaApi) return;
+    emblaApi.scrollPrev();
+    resetAutoplay();
+  }, [emblaApi, resetAutoplay]);
+
+  const goNext = useCallback(() => {
+    if (!emblaApi) return;
+    emblaApi.scrollNext();
+    resetAutoplay();
+  }, [emblaApi, resetAutoplay]);
+
   const jumpToRealIndex = useCallback(
-    (index: number) => emblaApi?.scrollTo(index),
-    [emblaApi],
+    (index: number) => {
+      if (!emblaApi) return;
+      emblaApi.scrollTo(index);
+      resetAutoplay();
+    },
+    [emblaApi, resetAutoplay],
   );
 
   return (

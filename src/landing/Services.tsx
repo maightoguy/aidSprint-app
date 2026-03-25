@@ -1,4 +1,6 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 
 import d_cleaning from "../assets/services/mmtpwiu8-4x9eqv6.svg";
 import d_psw from "../assets/services/mmtpwiu8-k0rwc9r.svg";
@@ -78,259 +80,38 @@ function CommunityTile({ src, className }: { src: string; className: string }) {
 }
 
 export function Services() {
-  const AUTO_SLIDE_MS = 7000;
   const serviceItems = useMemo<ServiceItem[]>(
     () => [
       { icon: d_cleaning, label: "Cleaning" },
-      { icon: d_psw, label: "PSW care" },
       { icon: d_plumbing, label: "Plumbing" },
       { icon: d_locksmith, label: "Locksmith" },
       { icon: d_electrician, label: "Electrician" },
       { icon: d_babysitting, label: "Babysitting" },
       { icon: d_petsitter, label: "Petsitter" },
       { icon: d_handyman, label: "Handyman" },
+      { icon: d_psw, label: "PSW care" },
     ],
     [],
   );
 
-  const iconScrollRef = useRef<HTMLDivElement | null>(null);
-  const iconScrollRafRef = useRef<number | null>(null);
-  const [activeIconIndex, setActiveIconIndex] = useState(0);
-  const activeIconIndexRef = useRef(0);
-  const [iconIsPaused, setIconIsPaused] = useState(false);
-  const [iconAutoKey, setIconAutoKey] = useState(0);
-
-  const communityViewportRef = useRef<HTMLDivElement | null>(null);
-  const communityTrackRef = useRef<HTMLDivElement | null>(null);
-  const communityBoundsRef = useRef({ minOffset: 0 });
-  const communityDidInitRef = useRef(false);
-  const communityDragRef = useRef({
-    active: false,
-    startX: 0,
-    startOffset: 0,
-  });
-  const [communityHasMeasured, setCommunityHasMeasured] = useState(false);
-  const [communityOffset, setCommunityOffset] = useState(0);
-  const [communityIsDragging, setCommunityIsDragging] = useState(false);
-  const [communitySnapIndex, setCommunitySnapIndex] = useState(0);
-  const [communityIsPaused, setCommunityIsPaused] = useState(false);
-  const [communityAutoKey, setCommunityAutoKey] = useState(0);
-
-  useEffect(() => {
-    const el = iconScrollRef.current;
-    if (!el) return;
-
-    const handleScroll = () => {
-      if (iconScrollRafRef.current !== null) {
-        window.cancelAnimationFrame(iconScrollRafRef.current);
-      }
-      iconScrollRafRef.current = window.requestAnimationFrame(() => {
-        const items = Array.from(
-          el.querySelectorAll<HTMLElement>("[data-service-item]"),
-        );
-        if (items.length === 0) return;
-        const leftEdge = el.scrollLeft;
-        let closestIdx = 0;
-        let closestDist = Number.POSITIVE_INFINITY;
-        items.forEach((item, idx) => {
-          const dist = Math.abs(item.offsetLeft - leftEdge);
-          if (dist < closestDist) {
-            closestDist = dist;
-            closestIdx = idx;
-          }
-        });
-        setActiveIconIndex((prev) => (prev === closestIdx ? prev : closestIdx));
-      });
-    };
-
-    el.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      el.removeEventListener("scroll", handleScroll);
-      if (iconScrollRafRef.current !== null) {
-        window.cancelAnimationFrame(iconScrollRafRef.current);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    activeIconIndexRef.current = activeIconIndex;
-  }, [activeIconIndex]);
-
-  useEffect(() => {
-    if (iconIsPaused) return;
-    const el = iconScrollRef.current;
-    if (!el) return;
-    const prefersReducedMotion =
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-
-    const timeoutId = window.setTimeout(() => {
-      const items = Array.from(
-        el.querySelectorAll<HTMLElement>("[data-service-item]"),
-      );
-      if (items.length === 0) return;
-      const stride =
-        items.length > 1 ? items[1].offsetLeft - items[0].offsetLeft : 1;
-      const visibleCount = Math.max(
-        1,
-        Math.floor(el.clientWidth / Math.max(1, stride)),
-      );
-      const step = Math.min(visibleCount, items.length);
-      const nextIdx = (activeIconIndexRef.current + step) % items.length;
-      const nextLeft = Math.min(
-        Math.max(0, items[nextIdx]?.offsetLeft ?? 0),
-        Math.max(0, el.scrollWidth - el.clientWidth),
-      );
-      el.scrollTo({
-        left: nextLeft,
-        behavior: prefersReducedMotion ? "auto" : "smooth",
-      });
-      setActiveIconIndex(nextIdx);
-      setIconAutoKey((k) => k + 1);
-    }, AUTO_SLIDE_MS);
-
-    return () => window.clearTimeout(timeoutId);
-  }, [AUTO_SLIDE_MS, iconIsPaused, iconAutoKey]);
-
-  useEffect(() => {
-    const viewport = communityViewportRef.current;
-    const track = communityTrackRef.current;
-    if (!viewport || !track) return;
-
-    const recalc = () => {
-      const viewportWidth = viewport.clientWidth;
-      const trackWidth = track.scrollWidth;
-      const minOffset = Math.min(0, viewportWidth - trackWidth);
-      communityBoundsRef.current = { minOffset };
-      const initialPreferredOffset =
-        typeof window !== "undefined" && window.innerWidth >= 1025 ? -137 : -80;
-      setCommunityOffset((prev) => {
-        if (!communityDidInitRef.current) {
-          communityDidInitRef.current = true;
-          return Math.max(minOffset, Math.min(0, initialPreferredOffset));
-        }
-        return Math.max(minOffset, Math.min(0, prev));
-      });
-      setCommunityHasMeasured(true);
-    };
-
-    recalc();
-
-    const ro =
-      typeof window !== "undefined" && "ResizeObserver" in window
-        ? new ResizeObserver(recalc)
-        : null;
-    ro?.observe(viewport);
-    ro?.observe(track);
-
-    window.addEventListener("resize", recalc);
-    return () => {
-      ro?.disconnect();
-      window.removeEventListener("resize", recalc);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!communityHasMeasured) return;
-    const { minOffset } = communityBoundsRef.current;
-    const initialPreferredOffset =
-      typeof window !== "undefined" && window.innerWidth >= 1025 ? -137 : -80;
-    const startOffset = Math.max(
-      minOffset,
-      Math.min(0, initialPreferredOffset),
-    );
-    const stops = [startOffset, (startOffset + minOffset) / 2, minOffset];
-    const target = stops[communitySnapIndex] ?? 0;
-    setCommunityOffset(Math.max(minOffset, Math.min(0, target)));
-  }, [communityHasMeasured, communitySnapIndex]);
-
-  useEffect(() => {
-    if (!communityHasMeasured) return;
-    if (communityIsDragging) return;
-    if (communityIsPaused) return;
-    const prefersReducedMotion =
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-    if (prefersReducedMotion) return;
-
-    const timeoutId = window.setTimeout(() => {
-      setCommunitySnapIndex((prev) => (prev + 1) % 3);
-      setCommunityAutoKey((k) => k + 1);
-    }, AUTO_SLIDE_MS);
-
-    return () => window.clearTimeout(timeoutId);
-  }, [
-    AUTO_SLIDE_MS,
-    communityHasMeasured,
-    communityIsDragging,
-    communityIsPaused,
-    communityAutoKey,
+  const [servicesRef] = useEmblaCarousel({ loop: true, align: "start" }, [
+    Autoplay({
+      delay: 7000,
+      stopOnInteraction: false,
+      stopOnMouseEnter: true,
+    }),
   ]);
 
-  const snapCommunityToNearest = (nextOffset: number) => {
-    const { minOffset } = communityBoundsRef.current;
-    const initialPreferredOffset =
-      typeof window !== "undefined" && window.innerWidth >= 1025 ? -137 : -80;
-    const startOffset = Math.max(
-      minOffset,
-      Math.min(0, initialPreferredOffset),
-    );
-    const stops = [startOffset, (startOffset + minOffset) / 2, minOffset];
-    let bestIdx = 0;
-    let bestDist = Number.POSITIVE_INFINITY;
-    stops.forEach((stop, idx) => {
-      const dist = Math.abs(stop - nextOffset);
-      if (dist < bestDist) {
-        bestDist = dist;
-        bestIdx = idx;
-      }
-    });
-    setCommunitySnapIndex(bestIdx);
-  };
-
-  const beginCommunityDrag = (clientX: number) => {
-    communityDragRef.current = {
-      active: true,
-      startX: clientX,
-      startOffset: communityOffset,
-    };
-    setCommunityIsDragging(true);
-  };
-
-  const moveCommunityDrag = (clientX: number) => {
-    if (!communityDragRef.current.active) return;
-    const { minOffset } = communityBoundsRef.current;
-    const dx = clientX - communityDragRef.current.startX;
-    const nextOffset = Math.max(
-      minOffset,
-      Math.min(0, communityDragRef.current.startOffset + dx),
-    );
-    setCommunityOffset(nextOffset);
-  };
-
-  const endCommunityDrag = () => {
-    if (!communityDragRef.current.active) return;
-    communityDragRef.current.active = false;
-    setCommunityIsDragging(false);
-    snapCommunityToNearest(communityOffset);
-    setCommunityAutoKey((k) => k + 1);
-  };
-
-  const nudgeCommunityBy = (dx: number) => {
-    const { minOffset } = communityBoundsRef.current;
-    setCommunityOffset((prev) => Math.max(minOffset, Math.min(0, prev + dx)));
-  };
-
-  const onCommunityWheel: React.WheelEventHandler<HTMLDivElement> = (e) => {
-    const absX = Math.abs(e.deltaX);
-    const absY = Math.abs(e.deltaY);
-    const wantsHorizontal = absX > absY || e.shiftKey;
-    if (!wantsHorizontal) return;
-    e.preventDefault();
-    const dx = -(absX > absY ? e.deltaX : e.deltaY);
-    nudgeCommunityBy(dx);
-    setCommunityAutoKey((k) => k + 1);
-  };
+  const [communityRef] = useEmblaCarousel(
+    { loop: true, align: "start", dragFree: true },
+    [
+      Autoplay({
+        delay: 7000,
+        stopOnInteraction: false,
+        stopOnMouseEnter: true,
+      }),
+    ],
+  );
 
   return (
     <section className="flex flex-col items-center w-full bg-[#fafafa] py-[50px] px-[24px] desktop:py-[100px] desktop:px-[120px] gap-[30px]">
@@ -425,65 +206,30 @@ export function Services() {
 
             <div className="flex flex-col border border-[#f0f1f2] rounded-[20px] bg-white overflow-hidden">
               <div className="flex items-center py-[45px] pb-[44px] overflow-hidden">
-                <div
-                  className="relative w-full max-w-[520px] overflow-hidden px-[32px] mx-auto"
-                  onMouseEnter={() => setIconIsPaused(true)}
-                  onMouseLeave={() => setIconIsPaused(false)}
-                  onFocusCapture={() => setIconIsPaused(true)}
-                  onBlurCapture={() => setIconIsPaused(false)}
-                >
-                  <div
-                    ref={iconScrollRef}
-                    className="flex items-start gap-[20px] overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory"
-                  >
-                    {serviceItems.map((service, idx) => (
-                      <div
-                        key={service.label}
-                        data-service-item
-                        className="flex flex-col items-center gap-[8px] shrink-0 w-[59px] snap-start cursor-pointer select-none"
-                        onClick={() => {
-                          const items = Array.from(
-                            iconScrollRef.current?.querySelectorAll<HTMLElement>(
-                              "[data-service-item]",
-                            ) ?? [],
-                          );
-                          const prefersReducedMotion =
-                            typeof window !== "undefined" &&
-                            window.matchMedia?.(
-                              "(prefers-reduced-motion: reduce)",
-                            )?.matches;
-                          const el = iconScrollRef.current;
-                          const item = items[idx];
-                          if (el && item) {
-                            const nextLeft = Math.min(
-                              Math.max(0, item.offsetLeft),
-                              Math.max(0, el.scrollWidth - el.clientWidth),
-                            );
-                            el.scrollTo({
-                              left: nextLeft,
-                              behavior: prefersReducedMotion
-                                ? "auto"
-                                : "smooth",
-                            });
-                          }
-                          setActiveIconIndex(idx);
-                          setIconAutoKey((k) => k + 1);
-                        }}
-                      >
-                        <div className="flex items-center justify-center border border-[#b1b5c0] rounded-[41px] bg-[#e6e7eb] p-[4px] shadow-[0px_4px_30px_rgba(0,0,0,0.14)]">
-                          <div className="flex items-center justify-center rounded-[41px] bg-white p-[9px]">
-                            <img
-                              src={service.icon}
-                              alt=""
-                              className="w-[24px] h-[24px]"
-                            />
+                <div className="relative w-full max-w-[520px] overflow-hidden px-[32px] mx-auto">
+                  <div ref={servicesRef} className="overflow-hidden">
+                    <div className="flex items-start gap-[20px]">
+                      {serviceItems.map((service, idx) => (
+                        <div
+                          key={service.label}
+                          data-service-item
+                          className="flex flex-col items-center gap-[8px] shrink-0 w-[59px] cursor-pointer select-none"
+                        >
+                          <div className="flex items-center justify-center border border-[#b1b5c0] rounded-[41px] bg-[#e6e7eb] p-[4px] shadow-[0px_4px_30px_rgba(0,0,0,0.14)]">
+                            <div className="flex items-center justify-center rounded-[41px] bg-white p-[9px]">
+                              <img
+                                src={service.icon}
+                                alt=""
+                                className="w-[24px] h-[24px]"
+                              />
+                            </div>
                           </div>
+                          <span className="text-[#020715] text-[12px] font-medium font-['Space_Grotesk'] text-center leading-[15px]">
+                            {service.label}
+                          </span>
                         </div>
-                        <span className="text-[#020715] text-[12px] font-medium font-['Space_Grotesk'] text-center leading-[15px]">
-                          {service.label}
-                        </span>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
 
                   <div className="pointer-events-none absolute inset-y-0 left-0 w-[28px] bg-gradient-to-r from-white to-transparent" />
@@ -523,82 +269,59 @@ export function Services() {
 
           <div className="relative flex-1 bg-[#eaeaea] overflow-hidden h-[289px] min-[1025px]:h-[402px]">
             <div className="h-full flex items-center">
-              <div
-                ref={communityViewportRef}
-                className="relative w-full overflow-hidden px-[20px] outline-none"
-                tabIndex={0}
-                style={{ touchAction: "pan-y" }}
-                onWheel={onCommunityWheel}
-                onMouseEnter={() => setCommunityIsPaused(true)}
-                onMouseLeave={() => setCommunityIsPaused(false)}
-                onFocusCapture={() => setCommunityIsPaused(true)}
-                onBlurCapture={() => setCommunityIsPaused(false)}
-                onKeyDown={(e) => {
-                  if (e.key === "ArrowLeft") {
-                    e.preventDefault();
-                    nudgeCommunityBy(160);
-                    setCommunityAutoKey((k) => k + 1);
-                    return;
-                  }
-                  if (e.key === "ArrowRight") {
-                    e.preventDefault();
-                    nudgeCommunityBy(-160);
-                    setCommunityAutoKey((k) => k + 1);
-                  }
-                }}
-                onPointerDown={(e) => {
-                  (e.currentTarget as HTMLDivElement).setPointerCapture(
-                    e.pointerId,
-                  );
-                  beginCommunityDrag(e.clientX);
-                }}
-                onPointerMove={(e) => moveCommunityDrag(e.clientX)}
-                onPointerUp={endCommunityDrag}
-                onPointerCancel={endCommunityDrag}
-                onTouchStart={(e) =>
-                  beginCommunityDrag(e.touches[0]?.clientX ?? 0)
-                }
-                onTouchMove={(e) =>
-                  moveCommunityDrag(e.touches[0]?.clientX ?? 0)
-                }
-                onTouchEnd={endCommunityDrag}
-              >
-                <div
-                  ref={communityTrackRef}
-                  className={`services-community-track flex flex-col gap-[9px] w-max ${
-                    communityHasMeasured ? "services-community-track--js" : ""
-                  } ${
-                    communityIsDragging
-                      ? "transition-none"
-                      : "transition-transform duration-700 ease-out"
-                  }`}
-                  style={
-                    communityHasMeasured
-                      ? { transform: `translate3d(${communityOffset}px,0,0)` }
-                      : undefined
-                  }
-                >
-                  <div className="flex items-center gap-[11px] pt-[24px] min-[1025px]:pt-[84px]">
-                    {[m_comm1, m_comm2, m_comm3, m_comm4].map((src, idx) => (
-                      <CommunityTile
-                        key={`row1-${idx}`}
-                        src={src}
-                        className="w-[150px] h-[80px] rounded-[12px] overflow-hidden min-[1025px]:w-[259px] min-[1025px]:h-[138px] min-[1025px]:rounded-[20px]"
-                      />
-                    ))}
-                  </div>
-                  <div className="flex items-center gap-[11px]">
-                    {[m_comm5, m_comm6, m_comm7, m_comm8].map((src, idx) => (
-                      <CommunityTile
-                        key={`row2-${idx}`}
-                        src={src}
-                        className="w-[150px] h-[80px] rounded-[12px] overflow-hidden min-[1025px]:w-[259px] min-[1025px]:h-[138px] min-[1025px]:rounded-[20px]"
-                      />
-                    ))}
-                    <CommunityTile
-                      src={m_comm9}
-                      className="w-[150px] h-[80px] rounded-[12px] overflow-hidden min-[1025px]:w-[259px] min-[1025px]:h-[138px] min-[1025px]:rounded-[7px]"
-                    />
+              <div className="relative w-full overflow-hidden px-[20px] outline-none">
+                <div ref={communityRef} className="overflow-hidden">
+                  <div className="flex gap-[9px] w-max">
+                    <div className="flex flex-col gap-[9px] flex-[0_0_auto]">
+                      <div className="flex items-center gap-[11px] pt-[24px] min-[1025px]:pt-[84px]">
+                        {[m_comm1, m_comm2].map((src, idx) => (
+                          <CommunityTile
+                            key={`row1-${idx}`}
+                            src={src}
+                            className="w-[150px] h-[80px] rounded-[12px] overflow-hidden min-[1025px]:w-[259px] min-[1025px]:h-[138px] min-[1025px]:rounded-[20px]"
+                          />
+                        ))}
+                      </div>
+                      <div className="flex items-center gap-[11px]">
+                        {[m_comm5, m_comm6].map((src, idx) => (
+                          <CommunityTile
+                            key={`row2-${idx}`}
+                            src={src}
+                            className="w-[150px] h-[80px] rounded-[12px] overflow-hidden min-[1025px]:w-[259px] min-[1025px]:h-[138px] min-[1025px]:rounded-[20px]"
+                          />
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-[9px] flex-[0_0_auto]">
+                      <div className="flex items-center gap-[11px] pt-[24px] min-[1025px]:pt-[84px]">
+                        {[m_comm3, m_comm4].map((src, idx) => (
+                          <CommunityTile
+                            key={`row1-b-${idx}`}
+                            src={src}
+                            className="w-[150px] h-[80px] rounded-[12px] overflow-hidden min-[1025px]:w-[259px] min-[1025px]:h-[138px] min-[1025px]:rounded-[20px]"
+                          />
+                        ))}
+                      </div>
+                      <div className="flex items-center gap-[11px]">
+                        {[m_comm7, m_comm8].map((src, idx) => (
+                          <CommunityTile
+                            key={`row2-b-${idx}`}
+                            src={src}
+                            className="w-[150px] h-[80px] rounded-[12px] overflow-hidden min-[1025px]:w-[259px] min-[1025px]:h-[138px] min-[1025px]:rounded-[20px]"
+                          />
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-[9px] flex-[0_0_auto]">
+                      <div className="flex items-center gap-[11px] pt-[24px] min-[1025px]:pt-[84px]">
+                        <CommunityTile
+                          src={m_comm9}
+                          className="w-[150px] h-[80px] rounded-[12px] overflow-hidden min-[1025px]:w-[259px] min-[1025px]:h-[138px] min-[1025px]:rounded-[7px]"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
 
