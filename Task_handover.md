@@ -126,7 +126,7 @@
 - **Task**: Implement "How AidSprint works" (Contractor tab) to match Figma.
   - Copied Contractor tab assets into `src/assets/how-it-works/contractor/` (bg pattern, 4 step screens, notch, store icons).
   - Updated `src/landing/HowItWorks.tsx` to switch step copy, images, background pattern, notch, and store icons based on selected tab.
-  - Reset step state to step 01 when switching between Users/Contractor tabs to match expected UX.
+  - Reset steps state to step 01 when switching between Users/Contractor tabs to match expected UX.
 
 ## Recent Changes (Post-Handover Updates)
 
