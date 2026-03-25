@@ -6,19 +6,27 @@ import m_menu from "../assets/header/mmtor1us-jkedjjg.svg";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const handleLogoClick = () => {
+    setIsMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <>
       {/* Desktop Header */}
       <header className="hidden desktop:flex fixed top-0 left-0 right-0 z-50 items-center justify-between px-[120px] py-[20px] bg-white shadow-[0_4px_50px_0_rgba(0,0,0,0.1)] h-[82px]">
         {/* Logo */}
-        <div className="flex items-center shrink-0">
+        <button
+          type="button"
+          onClick={handleLogoClick}
+          className="flex items-center shrink-0"
+        >
           <img
             src={logoPng}
             alt="AidSprint Logo"
             className="h-[30px] w-auto object-contain"
           />
-        </div>
+        </button>
 
         {/* Navigation Wrapper */}
         <div className="flex items-center justify-center gap-[20px] bg-[#fafafa] border border-[#f0f1f2] rounded-[55px] p-[1px_3px_1px_1px]">
@@ -56,13 +64,17 @@ export function Header() {
 
       {/* Mobile Header */}
       <header className="flex desktop:hidden fixed top-0 left-0 right-0 z-50 items-center justify-between px-[24px] py-[20px] bg-white shadow-[0_4px_10px_0_rgba(0,0,0,0.1)] h-[64px]">
-        <div className="flex items-center shrink-0">
+        <button
+          type="button"
+          onClick={handleLogoClick}
+          className="flex items-center shrink-0"
+        >
           <img
             src={logoPng}
             alt="AidSprint Logo"
             className="h-[24px] w-auto object-contain"
           />
-        </div>
+        </button>
         <button
           className="flex items-center justify-center w-[24px] h-[24px] shrink-0"
           onClick={() => setIsMenuOpen(!isMenuOpen)}

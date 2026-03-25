@@ -153,10 +153,13 @@
 - **Task**: Hero iPhone crop fix (mobile).
   - Adjusted the Hero iPhone mock’s bottom offset so the top is fully visible on mobile, with only the bottom cropped.
 
-- **Task**: Review carousel navigation controls.
-  - Implemented desktop-only left/right arrow buttons to scroll the reviews horizontally, with disabled state at edges and hover/active feedback.
-  - Fixed arrow orientation so both arrows point the correct direction (left arrow left, right arrow right).
-  - Ensured the review cards remain horizontally scrollable on all screens.
+- **Task**: Review carousel migration to Embla Carousel.
+  - Re-implemented the `Review.tsx` carousel using `embla-carousel-react` and `embla-carousel-autoplay`.
+  - Maintained the exact visual design, gap sizing, and `min-w-[280px]` cards using Embla's flex layout structure.
+  - Enabled smooth horizontal scrolling with touch/swipe support across all devices.
+  - Configured `loop: true` for seamless continuous sliding.
+  - Integrated `embla-carousel-autoplay` for automatic transitions (6500ms delay) with pause-on-hover and pause-on-interaction.
+  - Wired existing desktop left/right navigation arrows and dot indicators to `emblaApi.scrollPrev()`, `scrollNext()`, and `scrollTo()`.
 
 - **Task**: Testing setup (added, then tests removed).
   - Added a Vitest + Testing Library setup and a `test` script in `package.json`.

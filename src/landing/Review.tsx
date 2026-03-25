@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useCallback, useState } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 
 // Assets for Desktop
 import d_playstoreIcon from "../assets/review/mmz344z5-skya8pm.svg";
@@ -67,58 +69,37 @@ const reviews = [
 ];
 
 export function Review() {
-  const scrollRef = useRef<HTMLDivElement | null>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: true, align: "start" },
+    [
+      Autoplay({
+        delay: 6500,
+        stopOnInteraction: true,
+        stopOnMouseEnter: true,
+      }),
+    ],
+  );
 
-  const updateScrollState = () => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const maxScrollLeft = Math.max(0, el.scrollWidth - el.clientWidth);
-    setCanScrollLeft(el.scrollLeft > 1);
-    setCanScrollRight(el.scrollLeft < maxScrollLeft - 1);
-  };
+  const [activeDot, setActiveDot] = useState(0);
 
-  const getScrollStep = () => {
-    const el = scrollRef.current;
-    if (!el) return 288;
-    const cards = Array.from(
-      el.querySelectorAll<HTMLElement>("[data-review-card]"),
-    );
-    if (cards.length >= 2) {
-      const stride = cards[1].offsetLeft - cards[0].offsetLeft;
-      if (stride > 0) return stride;
-    }
-    if (cards.length >= 1) return cards[0].offsetWidth || 288;
-    return 288;
-  };
-
-  const scrollByStep = (dir: -1 | 1) => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const step = getScrollStep();
-    const nextLeft = Math.min(
-      Math.max(0, el.scrollLeft + dir * step),
-      Math.max(0, el.scrollWidth - el.clientWidth),
-    );
-    el.scrollTo({ left: nextLeft, behavior: "smooth" });
-    updateScrollState();
-  };
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setActiveDot(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
 
   useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const rafId = window.requestAnimationFrame(() => updateScrollState());
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+  }, [emblaApi, onSelect]);
 
-    const onScroll = () => updateScrollState();
-    el.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.cancelAnimationFrame(rafId);
-      el.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
+  const goPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const goNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+  const jumpToRealIndex = useCallback(
+    (index: number) => emblaApi?.scrollTo(index),
+    [emblaApi],
+  );
 
   return (
     <section className="flex flex-col items-center bg-white py-[50px] px-[24px] desktop:py-[100px] desktop:px-[120px] w-full overflow-hidden gap-[30px]">
@@ -166,72 +147,81 @@ export function Review() {
         </button>
       </div>
 
-      {/* Reviews Container */}
-      <div
-        ref={scrollRef}
-        data-testid="reviews-scroll"
-        className="flex items-center gap-[8px] w-full max-w-[1200px] overflow-x-auto no-scrollbar py-[10px] snap-x snap-mandatory"
-      >
-        {reviews.map((review) => (
-          <div
-            key={review.id}
-            data-review-card
-            className="flex flex-col justify-between min-w-[280px] w-[280px] desktop:min-w-[280px] desktop:w-[280px] flex-1 bg-[#fafafa] border border-[#f0f1f2] rounded-[24px] p-[31px] h-[267px] snap-center shrink-0"
-          >
-            <p className="text-[#5e5e5e] text-[16px] font-['Space_Grotesk'] leading-[1.5]">
-              {review.text}
-            </p>
-            <div className="flex items-center gap-[12px]">
-              <img
-                src={review.avatar}
-                alt={review.name}
-                className="w-[32px] h-[32px] rounded-full object-cover"
-              />
-              <div className="flex flex-col">
-                <span className="text-[#000000] text-[16px] font-medium font-['Space_Grotesk'] leading-[1.2] desktop:leading-[11px]">
-                  {review.name}
-                </span>
-                <span className="text-[#6b7280] text-[14px] font-['Space_Grotesk'] leading-[18px]">
-                  {review.role}
-                </span>
+      <div className="flex flex-col items-center w-full max-w-[1200px]">
+        <div
+          ref={emblaRef}
+          data-testid="reviews-scroll"
+          className="w-full overflow-hidden py-[10px]"
+        >
+          <div className="flex items-center gap-[8px]">
+            {reviews.map((review) => (
+              <div
+                key={review.id}
+                data-review-card
+                className="flex flex-col justify-between min-w-[280px] w-[280px] desktop:min-w-[280px] desktop:w-[280px] flex-[0_0_auto] bg-[#fafafa] border border-[#f0f1f2] rounded-[24px] p-[31px] h-[267px]"
+              >
+                <p className="text-[#5e5e5e] text-[16px] font-['Space_Grotesk'] leading-[1.5]">
+                  {review.text}
+                </p>
+                <div className="flex items-center gap-[12px]">
+                  <img
+                    src={review.avatar}
+                    alt={review.name}
+                    className="w-[32px] h-[32px] rounded-full object-cover"
+                  />
+                  <div className="flex flex-col">
+                    <span className="text-[#000000] text-[16px] font-medium font-['Space_Grotesk'] leading-[1.2] desktop:leading-[11px]">
+                      {review.name}
+                    </span>
+                    <span className="text-[#6b7280] text-[14px] font-['Space_Grotesk'] leading-[18px]">
+                      {review.role}
+                    </span>
+                  </div>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
-        ))}
-      </div>
-
-      {/* Pager & Arrows (Desktop Only) */}
-      <div className="hidden desktop:flex items-center justify-center gap-[8px] mt-[10px]">
-        <button
-          type="button"
-          data-testid="reviews-prev"
-          disabled={!canScrollLeft}
-          aria-disabled={!canScrollLeft}
-          onClick={() => scrollByStep(-1)}
-          className="flex items-center justify-center w-[32px] h-[32px] bg-[#fafafa] border border-[#f0f1f2] rounded-full transition-colors hover:bg-gray-100 active:scale-[0.97] disabled:opacity-40 disabled:cursor-not-allowed"
-        >
-          <img src={d_leftArrow} alt="Previous" className="w-[16px] h-[16px]" />
-        </button>
-        <div className="flex items-center justify-between w-[85px] px-[4px]">
-          <div className="w-[10px] h-[10px] bg-[#d1d3d8] rounded-full cursor-pointer" />
-          <div className="w-[10px] h-[10px] bg-[#5d5a88] rounded-full cursor-pointer" />
-          <div className="w-[10px] h-[10px] bg-[#d1d3d8] rounded-full cursor-pointer" />
-          <div className="w-[10px] h-[10px] bg-[#d1d3d8] rounded-full cursor-pointer" />
         </div>
-        <button
-          type="button"
-          data-testid="reviews-next"
-          disabled={!canScrollRight}
-          aria-disabled={!canScrollRight}
-          onClick={() => scrollByStep(1)}
-          className="flex items-center justify-center w-[32px] h-[32px] bg-[#fafafa] border border-[#f0f1f2] rounded-full transition-colors hover:bg-gray-100 active:scale-[0.97] disabled:opacity-40 disabled:cursor-not-allowed"
-        >
-          <img
-            src={d_rightArrow}
-            alt="Next"
-            className="w-[16px] h-[16px] rotate-180"
-          />
-        </button>
+
+        <div className="hidden desktop:flex items-center justify-center gap-[8px] mt-[10px]">
+          <button
+            type="button"
+            data-testid="reviews-prev"
+            onClick={goPrev}
+            className="flex items-center justify-center w-[32px] h-[32px] bg-[#fafafa] border border-[#f0f1f2] rounded-full transition-colors hover:bg-gray-100 active:scale-[0.97]"
+          >
+            <img
+              src={d_leftArrow}
+              alt="Previous"
+              className="w-[16px] h-[16px]"
+            />
+          </button>
+          <div className="flex items-center gap-[12px] px-[4px]">
+            {reviews.map((_, dotIdx) => (
+              <button
+                key={dotIdx}
+                type="button"
+                aria-label={`Go to review ${dotIdx + 1}`}
+                onClick={() => jumpToRealIndex(dotIdx)}
+                className={`w-[10px] h-[10px] rounded-full ${
+                  dotIdx === activeDot ? "bg-[#5d5a88]" : "bg-[#d1d3d8]"
+                }`}
+              />
+            ))}
+          </div>
+          <button
+            type="button"
+            data-testid="reviews-next"
+            onClick={goNext}
+            className="flex items-center justify-center w-[32px] h-[32px] bg-[#fafafa] border border-[#f0f1f2] rounded-full transition-colors hover:bg-gray-100 active:scale-[0.97]"
+          >
+            <img
+              src={d_rightArrow}
+              alt="Next"
+              className="w-[16px] h-[16px] rotate-180"
+            />
+          </button>
+        </div>
       </div>
     </section>
   );

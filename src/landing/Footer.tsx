@@ -1,15 +1,8 @@
 import React from "react";
 
+import secLogo from "../assets/logos/sec-logo.png";
+
 // Assets for Desktop
-import d_vector1 from "../assets/footer/mmz3lttv-aoktajo.svg";
-import d_vector2 from "../assets/footer/mmz3lttv-1d8wmgq.svg";
-import d_vector3 from "../assets/footer/mmz3lttv-77e9zjd.svg";
-import d_vector4 from "../assets/footer/mmz3lttv-f1iwjc1.svg";
-import d_vector5 from "../assets/footer/mmz3lttv-gdmin11.svg";
-import d_vector6 from "../assets/footer/mmz3lttv-jl3w3sx.svg";
-import d_vector7 from "../assets/footer/mmz3lttv-2up5hxh.svg";
-import d_vector8 from "../assets/footer/mmz3lttv-cy5ghv3.svg";
-import d_logoIcon from "../assets/footer/mmz3lttv-nhrx1ln.svg";
 
 import d_playstoreIcon from "../assets/footer/mmz3lttv-hdrtytr.svg";
 import d_appstoreIcon from "../assets/footer/mmz3lttw-vp2sdyk.svg";
@@ -22,15 +15,6 @@ import d_social4 from "../assets/footer/mmz3lttw-zodzmn5.svg"; // LinkedIn
 import d_watermark from "../assets/footer/mmz3lttw-as1z5sq.svg";
 
 // Assets for Mobile
-import m_vector1 from "../assets/footer/mmz3meu5-o8y9ag3.svg";
-import m_vector2 from "../assets/footer/mmz3meu5-d1s5pnd.svg";
-import m_vector3 from "../assets/footer/mmz3meu5-fz4cddw.svg";
-import m_vector4 from "../assets/footer/mmz3meu5-qtl0d2b.svg";
-import m_vector5 from "../assets/footer/mmz3meu5-tdx05m0.svg";
-import m_vector6 from "../assets/footer/mmz3meu5-uwvi5yn.svg";
-import m_vector7 from "../assets/footer/mmz3meu6-o33p640.svg";
-import m_vector8 from "../assets/footer/mmz3meu6-htznlf3.svg";
-import m_logoIcon from "../assets/footer/mmz3meu5-c8rtwsf.svg";
 
 import m_playstoreIcon from "../assets/footer/mmz3meu6-z7jsy9j.svg";
 import m_appstoreIcon from "../assets/footer/mmz3meu6-nsfjqbd.svg";
@@ -44,102 +28,20 @@ import m_watermark from "../assets/footer/mmz3meu5-smq65tg.svg";
 
 const DesktopLogo = () => (
   <div className="flex items-start shrink-0 relative h-[30px]">
-    <img src={d_vector1} className="mt-[6px] w-[16px] h-[17px]" alt="" />
     <img
-      src={d_vector2}
-      className="mt-[6px] ml-[1px] w-[3px] h-[18px]"
-      alt=""
-    />
-    <img
-      src={d_vector3}
-      className="mt-[6px] ml-[1px] w-[12px] h-[18px]"
-      alt=""
-    />
-    <img
-      src={d_vector4}
-      className="mt-[6px] ml-[2px] w-[13px] h-[18px]"
-      alt=""
-    />
-    <img
-      src={d_vector5}
-      className="mt-[10px] ml-[2px] w-[12px] h-[19px]"
-      alt=""
-    />
-    <img
-      src={d_vector6}
-      className="mt-[10px] ml-[2px] w-[7px] h-[13px]"
-      alt=""
-    />
-    <img
-      src={d_vector2}
-      className="mt-[6px] ml-[1px] w-[3px] h-[18px]"
-      alt=""
-    />
-    <img
-      src={d_vector7}
-      className="mt-[10px] ml-[2px] w-[11px] h-[13px]"
-      alt=""
-    />
-    <img
-      src={d_vector8}
-      className="mt-[7px] ml-[1px] w-[7px] h-[16px]"
-      alt=""
-    />
-    <img
-      src={d_logoIcon}
-      className="ml-[6px] w-[29px] h-[29px]"
-      alt="Logo Icon"
+      src={secLogo}
+      alt="AidSprint Logo"
+      className="h-full w-auto object-contain"
     />
   </div>
 );
 
 const MobileLogo = () => (
   <div className="flex items-start shrink-0 relative h-[30px]">
-    <img src={m_vector1} className="mt-[6px] w-[16px] h-[17px]" alt="" />
     <img
-      src={m_vector2}
-      className="mt-[6px] ml-[1px] w-[3px] h-[18px]"
-      alt=""
-    />
-    <img
-      src={m_vector3}
-      className="mt-[6px] ml-[1px] w-[12px] h-[18px]"
-      alt=""
-    />
-    <img
-      src={m_vector4}
-      className="mt-[6px] ml-[2px] w-[13px] h-[18px]"
-      alt=""
-    />
-    <img
-      src={m_vector5}
-      className="mt-[10px] ml-[2px] w-[12px] h-[19px]"
-      alt=""
-    />
-    <img
-      src={m_vector6}
-      className="mt-[10px] ml-[2px] w-[7px] h-[13px]"
-      alt=""
-    />
-    <img
-      src={m_vector2}
-      className="mt-[6px] ml-[1px] w-[3px] h-[18px]"
-      alt=""
-    />
-    <img
-      src={m_vector7}
-      className="mt-[10px] ml-[2px] w-[11px] h-[13px]"
-      alt=""
-    />
-    <img
-      src={m_vector8}
-      className="mt-[7px] ml-[1px] w-[7px] h-[16px]"
-      alt=""
-    />
-    <img
-      src={m_logoIcon}
-      className="ml-[6px] w-[29px] h-[29px]"
-      alt="Logo Icon"
+      src={secLogo}
+      alt="AidSprint Logo"
+      className="h-full w-auto object-contain"
     />
   </div>
 );
