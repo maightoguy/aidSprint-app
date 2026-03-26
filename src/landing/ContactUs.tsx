@@ -35,10 +35,11 @@ export function ContactUs() {
       {/* Header */}
       <div className="relative z-10 flex flex-col items-center gap-[14px] w-full text-center">
         <h2 className="text-white text-[24px] desktop:text-[30px] font-bold font-['Space_Grotesk']">
-          Need more enquires
+          We’re Here to Help You Anytime
         </h2>
         <p className="text-[#b1b5c0] text-[14px] font-['Space_Grotesk']">
-          Kindly contact us using . the form/process below
+          Have questions, feedback, or need assistance? Reach out to our support
+          team.
         </p>
       </div>
 
@@ -70,7 +71,7 @@ export function ContactUs() {
                   </span>
                 </div>
                 <span className="text-[#b1b5c0] text-[12px] font-medium font-['Space_Grotesk'] mt-[4px]">
-                  hey@AidSprint.com
+                  Info@aidsprint.com
                 </span>
               </div>
 
@@ -85,8 +86,20 @@ export function ContactUs() {
                   </span>
                 </div>
                 <span className="text-[#b1b5c0] text-[12px] font-medium font-['Space_Grotesk'] mt-[4px]">
-                  +1 (415) 123-456
+                  +1 (437) 878-9167
                 </span>
+              </div>
+
+              {/* Live Chat */}
+              <div className="flex flex-col gap-[8px]">
+                <div className="flex flex-col gap-[4px]">
+                  <span className="text-white text-[16px] font-medium font-['Space_Grotesk']">
+                    Live Chat
+                  </span>
+                  <span className="text-[#b1b5c0] text-[14px] font-['Space_Grotesk']">
+                    Available inside the AidSprint mobile app.
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -201,7 +214,7 @@ export function ContactUs() {
 
         {/* Logo (Mobile only - shown at bottom of the entire card in design) */}
         <div className="flex desktop:hidden items-center mt-[20px]">
-            <div className="flex items-start shrink-0 relative w-[130px] h-[30px]">
+          <div className="flex items-start shrink-0 relative w-[130px] h-[30px]">
             <img
               src={vector1}
               className="mt-[5px] -ml-[1px] w-[14px] h-[16px]"
