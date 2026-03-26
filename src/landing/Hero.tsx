@@ -48,7 +48,7 @@ export function Hero() {
         <div className="inline-flex items-center gap-2.5 px-5 py-2.5 bg-[#02071566] rounded-full">
           <img src={badgeIcon} alt="Badge Icon" className="w-5 h-5" />
           <span className="text-white text-sm font-medium tracking-[-0.2px]">
-            Innovative service provider platform
+            Innovative Emergency service provider platform
           </span>
         </div>
 

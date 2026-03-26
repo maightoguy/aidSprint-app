@@ -2,6 +2,9 @@ import "./App.css";
 import { Header } from "./landing/Header";
 import { Hero } from "./landing/Hero";
 import { Services } from "./landing/Services";
+import { About } from "./landing/About";
+import { WhyTrust } from "./landing/WhyTrust";
+import { WhyChoose } from "./landing/WhyChoose";
 import { HowItWorks } from "./landing/HowItWorks";
 import { OurStory } from "./landing/OurStory";
 import { FAQ } from "./landing/FAQ";
@@ -15,6 +18,9 @@ export default function App() {
       <Header />
       <Hero />
       <Services />
+      <About />
+      <WhyTrust />
+      <WhyChoose />
       <HowItWorks />
       <OurStory />
       <FAQ />

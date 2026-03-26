@@ -35,7 +35,7 @@ const userSteps: HowItWorksStep[] = [
   {
     id: 2,
     title: "Get Matched Instantly",
-    desc: "Nearby verified contractors receive your request and respond quickly.",
+    desc: "AidSprint connects you with nearby verified professionals ready to help.",
     img: step02Screen,
   },
   {
@@ -68,7 +68,7 @@ const contractorSteps: HowItWorksStep[] = [
   {
     id: 3,
     title: "Accept Jobs",
-    desc: "Browse nearby emergency requests that match your skills",
+    desc: "Get matched with emergency requests and accept.",
     img: contractorStep03Screen,
   },
   {
