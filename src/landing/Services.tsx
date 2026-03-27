@@ -128,18 +128,18 @@ export function Services() {
 
       <div className="flex flex-col w-full max-w-[1200px] gap-[12px]">
         <div className="flex flex-col desktop:flex-row items-stretch gap-[12px] w-full">
+          {/* Services Icons - Moved to the left/top position */}
           <div className="flex flex-col flex-1 border border-[#f0f1f2] rounded-[20px] bg-white overflow-hidden">
             <div className="flex flex-col gap-[8px] p-[32px]">
               <h3 className="text-[#000000] text-[24px] font-bold font-['Space_Grotesk']">
-                Optimized Layouts
+                Services
               </h3>
               <p className="text-[#6b7280] text-[14px] font-['Space_Grotesk']">
-                Crafted to adapt beautifully across screen sizes—fluid,
-                responsive, and consistent wherever you go.
+                Everything you need to keep your home running smoothly.
               </p>
             </div>
 
-            <div className="bg-[#e6e7eb] pt-[32px] overflow-hidden flex-1">
+            <div className="bg-[#e6e7eb] pt-[32px] overflow-hidden">
               <div className="relative h-[320px] overflow-hidden desktop:h-[420px] desktop:px-[160px] flex justify-center">
                 <div className="relative w-[275px] h-[562px]">
                   <PhoneMock
@@ -166,9 +166,42 @@ export function Services() {
                 </div>
               </div>
             </div>
+
+            <div className="flex items-center py-[32px] overflow-hidden">
+              <div className="relative w-full max-w-[520px] overflow-hidden px-[32px] mx-auto">
+                <div ref={servicesRef} className="overflow-hidden">
+                  <div className="flex items-start gap-[20px]">
+                    {serviceItems.map((service, idx) => (
+                      <div
+                        key={service.label}
+                        data-service-item
+                        className="flex flex-col items-center gap-[8px] shrink-0 w-[59px] cursor-pointer select-none"
+                      >
+                        <div className="flex items-center justify-center border border-[#b1b5c0] rounded-[41px] bg-[#e6e7eb] p-[4px] shadow-[0px_4px_30px_rgba(0,0,0,0.14)]">
+                          <div className="flex items-center justify-center rounded-[41px] bg-white p-[9px]">
+                            <img
+                              src={service.icon}
+                              alt=""
+                              className="w-[24px] h-[24px]"
+                            />
+                          </div>
+                        </div>
+                        <span className="text-[#020715] text-[12px] font-medium font-['Space_Grotesk'] text-center leading-[15px]">
+                          {service.label}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pointer-events-none absolute inset-y-0 left-0 w-[28px] bg-gradient-to-r from-white to-transparent" />
+                <div className="pointer-events-none absolute inset-y-0 right-0 w-[28px] bg-gradient-to-l from-white to-transparent" />
+              </div>
+            </div>
           </div>
 
           <div className="flex flex-col flex-1 gap-[12px]">
+            {/* Connection/Avatars Block */}
             <div className="flex flex-col flex-1 border border-[#f0f1f2] rounded-[20px] bg-white p-[31px] gap-[20px]">
               <div className="flex items-center">
                 <img
@@ -204,44 +237,134 @@ export function Services() {
               </div>
             </div>
 
-            <div className="flex flex-col border border-[#f0f1f2] rounded-[20px] bg-white overflow-hidden">
-              <div className="flex items-center py-[45px] pb-[44px] overflow-hidden">
-                <div className="relative w-full max-w-[520px] overflow-hidden px-[32px] mx-auto">
-                  <div ref={servicesRef} className="overflow-hidden">
-                    <div className="flex items-start gap-[20px]">
-                      {serviceItems.map((service, idx) => (
-                        <div
-                          key={service.label}
-                          data-service-item
-                          className="flex flex-col items-center gap-[8px] shrink-0 w-[59px] cursor-pointer select-none"
-                        >
-                          <div className="flex items-center justify-center border border-[#b1b5c0] rounded-[41px] bg-[#e6e7eb] p-[4px] shadow-[0px_4px_30px_rgba(0,0,0,0.14)]">
-                            <div className="flex items-center justify-center rounded-[41px] bg-white p-[9px]">
-                              <img
-                                src={service.icon}
-                                alt=""
-                                className="w-[24px] h-[24px]"
-                              />
-                            </div>
-                          </div>
-                          <span className="text-[#020715] text-[12px] font-medium font-['Space_Grotesk'] text-center leading-[15px]">
-                            {service.label}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
+            {/* New Key Features Section - Replacing the old Services location */}
+            <div className="flex flex-col border border-[#f0f1f2] rounded-[20px] bg-white p-[32px] gap-[20px]">
+              <h3 className="text-[#000000] text-[24px] font-bold font-['Space_Grotesk']">
+                Key Features
+              </h3>
+              <ul className="flex flex-col gap-[16px]">
+                <li className="flex items-start gap-[12px]">
+                  <div className="flex-shrink-0 w-[24px] h-[24px] flex items-center justify-center rounded-full bg-[#e8f5e9] text-[#2e7d32] mt-[2px]">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
                   </div>
-
-                  <div className="pointer-events-none absolute inset-y-0 left-0 w-[28px] bg-gradient-to-r from-white to-transparent" />
-                  <div className="pointer-events-none absolute inset-y-0 right-0 w-[28px] bg-gradient-to-l from-white to-transparent" />
-                </div>
-              </div>
-
-              <div className="flex flex-col px-[32px] pb-[32px] items-center">
-                <h4 className="text-[#000000] text-[24px] font-bold font-['Space_Grotesk'] text-center">
-                  Services
-                </h4>
-              </div>
+                  <div>
+                    <h4 className="text-[#000000] text-[16px] font-bold font-['Space_Grotesk']">
+                      Instant Matching
+                    </h4>
+                    <p className="text-[#6b7280] text-[14px] font-['Inter']">
+                      We connect you to verified professionals in seconds.
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-[12px]">
+                  <div className="flex-shrink-0 w-[24px] h-[24px] flex items-center justify-center rounded-full bg-[#e8f5e9] text-[#2e7d32] mt-[2px]">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-[#000000] text-[16px] font-bold font-['Space_Grotesk']">
+                      Trusted & Vetted Experts
+                    </h4>
+                    <p className="text-[#6b7280] text-[14px] font-['Inter']">
+                      Every provider is screened for skill, identity, and
+                      reliability.
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-[12px]">
+                  <div className="flex-shrink-0 w-[24px] h-[24px] flex items-center justify-center rounded-full bg-[#e8f5e9] text-[#2e7d32] mt-[2px]">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-[#000000] text-[16px] font-bold font-['Space_Grotesk']">
+                      Real-Time Arrival Tracking
+                    </h4>
+                    <p className="text-[#6b7280] text-[14px] font-['Inter']">
+                      Know exactly when help is on the way.
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-[12px]">
+                  <div className="flex-shrink-0 w-[24px] h-[24px] flex items-center justify-center rounded-full bg-[#e8f5e9] text-[#2e7d32] mt-[2px]">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-[#000000] text-[16px] font-bold font-['Space_Grotesk']">
+                      Safe, Transparent Payments
+                    </h4>
+                    <p className="text-[#6b7280] text-[14px] font-['Inter']">
+                      Pay securely — no hidden charges, no surprises.
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-[12px]">
+                  <div className="flex-shrink-0 w-[24px] h-[24px] flex items-center justify-center rounded-full bg-[#e8f5e9] text-[#2e7d32] mt-[2px]">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-[#000000] text-[16px] font-bold font-['Space_Grotesk']">
+                      24/7 Availability
+                    </h4>
+                    <p className="text-[#6b7280] text-[14px] font-['Inter']">
+                      We’re here whenever you need help.
+                    </p>
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
