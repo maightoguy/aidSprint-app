@@ -10,7 +10,7 @@ export function OurStory() {
   return (
     <section className="flex flex-col items-center bg-[#fafafa] py-[50px] px-[24px] desktop:py-[100px] desktop:px-[120px] gap-[30px]">
       {/* Header Section */}
-      <div className="flex flex-col items-center gap-[14px] desktop:gap-[30px] w-full max-w-[668px] mx-auto text-center">
+      {/* <div className="flex flex-col items-center gap-[14px] desktop:gap-[30px] w-full max-w-[668px] mx-auto text-center">
         <h2 className="text-[24px] desktop:text-[30px] font-bold text-black font-['Space_Grotesk'] leading-tight">
           How Our story at Aidsprint
         </h2>
@@ -19,7 +19,7 @@ export function OurStory() {
           efficiency. Building quality products and caring for the users are
           what made us stand out since the beginning.
         </p>
-      </div>
+      </div> */}
 
       {/* Main Image */}
       <div className="w-full max-w-[1168px] rounded-[6px] desktop:rounded-[20px] overflow-hidden mt-[10px] desktop:mt-[0]">

@@ -115,7 +115,7 @@ export function Services() {
 
   return (
     <section className="flex flex-col items-center w-full bg-[#fafafa] py-[50px] px-[24px] desktop:py-[100px] desktop:px-[120px] gap-[30px]">
-      <div className="flex flex-col items-center text-center gap-[14px] w-full max-w-[944px]">
+      {/* <div className="flex flex-col items-center text-center gap-[14px] w-full max-w-[944px]">
         <h2 className="text-[#000000] text-[24px] desktop:text-[30px] font-bold font-['Space_Grotesk']">
           Why us AidSprint?&nbsp;
         </h2>
@@ -124,7 +124,7 @@ export function Services() {
           cleaners, and other professionals near you. Request help, track
           arrival in real time, and pay securely all from your phone.
         </p>
-      </div>
+      </div> */}
 
       <div className="flex flex-col w-full max-w-[1200px] gap-[12px]">
         <div className="flex flex-col desktop:flex-row items-stretch gap-[12px] w-full">
@@ -135,7 +135,8 @@ export function Services() {
                 Services
               </h3>
               <p className="text-[#6b7280] text-[14px] font-['Space_Grotesk']">
-                Everything you need to keep your home running smoothly.
+                Everything you need, we help you get it done quickly and
+                effortlessly.
               </p>
             </div>
 
@@ -231,8 +232,8 @@ export function Services() {
                   Easy Connection
                 </h3>
                 <p className="text-[#6b7280] text-[14px] font-['Space_Grotesk']">
-                  Real-time teamwork made simple with synced changes and smart
-                  user roles across your team.
+                  Fast requests, real-time updates, smooth communication.
+                  Keeping you connected every step of the way.
                 </p>
               </div>
             </div>

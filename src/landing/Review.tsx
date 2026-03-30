@@ -45,27 +45,6 @@ const reviews = [
     role: "Brampton",
     avatar: d_avatar4,
   },
-  {
-    id: 5,
-    text: "“Joining AidSprint increased my client base overnight. I get steady jobs every week and only work when I want to. The platform is smooth and transparent.”",
-    name: "Josh F.",
-    role: "Professional Electrician",
-    avatar: d_avatar1, // Reusing avatars since we only have 4
-  },
-  {
-    id: 6,
-    text: "“As a single mom, AidSprint has helped me earn consistently. Payments are fast, and customers are respectful and verified.”",
-    name: "Isabel M.",
-    role: "Cleaner",
-    avatar: d_avatar2,
-  },
-  {
-    id: 7,
-    text: "“I love how easy it is to accept jobs on the app. No more waiting for referrals. AidSprint brings the customers directly to me.”",
-    name: "Kelvin J.",
-    role: "Plumber",
-    avatar: d_avatar3,
-  },
 ];
 
 export function Review() {
@@ -126,7 +105,7 @@ export function Review() {
       {/* Header */}
       <div className="flex flex-col items-center gap-[14px] w-full text-center">
         <h2 className="text-[#000000] text-[24px] desktop:text-[30px] font-bold font-['Space_Grotesk']">
-          What our customer’s say
+          What our customers say
         </h2>
         <p className="text-[#5e5e5e] text-[14px] font-['Space_Grotesk'] desktop:font-['Inter'] tracking-[-0.2px]">
           Get firsthand reviews from our customers

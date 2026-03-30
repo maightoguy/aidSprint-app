@@ -199,7 +199,7 @@ export function Footer() {
         <div className="w-full h-[1px] bg-[#eaeaea] opacity-20" />
         <div className="flex items-center gap-[12px]">
           <span className="text-[#e6e7eb] text-[12px] font-['Inter']">
-            © 2099 Palm UI
+            Copyright Aidsprint Solutions 2026
           </span>
           <div className="w-[2px] h-[2px] rounded-full bg-[#e6e7eb]" />
           <a
